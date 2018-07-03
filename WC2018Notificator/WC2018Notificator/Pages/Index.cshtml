@@ -5,5 +5,29 @@
 }
 
 <div style="width: 100%; text-align: center; margin-top: 50px; font-family: sans-serif">
-    <h1>Something will be here</h1>
+    <input type="button" id="getPlayers" value="Get all" class="btn btn-primary"/>
+    <input type="button" id="addPlayer" value="Add one" class="btn btn-primary"/>
 </div>
+
+<script>
+    $("#getPlayers").click(() => { 
+        $.ajax({
+            url: "api/notification/players",
+            success: (r) => {
+                $("#responseSpan").text('');
+                r.forEach((v) => {
+                    $("#responseSpan").text($("#responseSpan").text() + parsePlayer(v));
+                });
+            }
+        });
+    });
+
+    function parsePlayer(player) {
+        return player.name + ' ' + player.email + '\n';
+    }
+
+    $("#addPlayer").click(() => {
+
+        $.postJSON("api/notification/players/add", { name: "John", email: "doe@mail.com", id: "" }, () => { }, "application/json");
+    });
+</script>
